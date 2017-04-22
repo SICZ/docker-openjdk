@@ -1,13 +1,13 @@
-ALPINE_TAG		?= latest
-OPENJDK_TAG		?= 8-jdk
-OPENJDK_MAJOR_VER	= $(shell echo $(OPENJDK_TAG) | sed 's/-.*//')
+ALPINE_VERSION		?= latest
+OPENJDK_VERSION		?= 8-jdk
+OPENJDK_MAJOR_VERSION	= $(shell echo $(OPENJDK_VERSION) | sed 's/-.*//')
 
-BASE_IMAGE_TAG		= $(ALPINE_TAG)
+BASE_IMAGE_TAG		= $(ALPINE_VERSION)
 
 DOCKER_PROJECT		= sicz
 DOCKER_NAME		= openjdk
-DOCKER_TAG		= $(OPENJDK_TAG)
-DOCKER_FILE_SUB		+= OPENJDK_MAJOR_VER
+DOCKER_TAG		= $(OPENJDK_VERSION)
+DOCKER_FILE_SUB		+= OPENJDK_MAJOR_VERSION
 
 DOCKER_RUN_OPTS		= $(DOCKER_SHELL_OPTS) \
 			  -v /var/run/docker.sock:/var/run/docker.sock

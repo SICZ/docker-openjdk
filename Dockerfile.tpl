@@ -2,15 +2,15 @@ FROM sicz/baseimage-alpine:%%BASE_IMAGE_TAG%%
 
 ENV \
   org.label-schema.schema-version="1.0" \
-  org.label-schema.name="sicz/openjdk" \
+  org.label-schema.name="%%DOCKER_PROJECT%%/%%DOCKER_NAME%%" \
   org.label-schema.description="An OpenJDK image based on Alpine Linux." \
   org.label-schema.build-date="%%REFRESHED_AT%%" \
   org.label-schema.url="http://openjdk.java.net" \
-  org.label-schema.vcs-url="https://github.com/sicz/docker-openjdk"
+  org.label-schema.vcs-url="https://github.com/%%DOCKER_PROJECT%%/docker-%%DOCKER_NAME%%"
 
 RUN set -x && apk add --no-cache openjdk%%OPENJDK_MAJOR_VER%%
 
-ENV JAVA_HOME /usr/lib/jvm/java-1.%%OPENJDK_MAJOR_VER%%-openjdk
+ENV JAVA_HOME /usr/lib/jvm/java-1.%%OPENJDK_MAJOR_VERSION%%-openjdk
 ENV PATH ${PATH}:${JAVA_HOME}/jre/bin:${JAVA_HOME}/bin
 
 RUN set -x \
@@ -18,9 +18,9 @@ RUN set -x \
   # https://github.com/floragunncom/search-guard-ssl/issues/43
   && apk add --no-cache unzip \
   && curl -jksSLOH "Cookie: oraclelicense=accept-securebackup-cookie" \
-      "http://download.oracle.com/otn-pub/java/jce/%%OPENJDK_MAJOR_VER%%/jce_policy-%%OPENJDK_MAJOR_VER%%.zip" \
-  && unzip -jo -d ${JAVA_HOME}/jre/lib/security jce_policy-%%OPENJDK_MAJOR_VER%%.zip \*/\*.jar \
-  && rm -f jce_policy-%%OPENJDK_MAJOR_VER%%.zip \
+      "http://download.oracle.com/otn-pub/java/jce/%%OPENJDK_MAJOR_VERSION%%/jce_policy-%%OPENJDK_MAJOR_VERSION%%.zip" \
+  && unzip -jo -d ${JAVA_HOME}/jre/lib/security jce_policy-%%OPENJDK_MAJOR_VERSION%%.zip \*/\*.jar \
+  && rm -f jce_policy-%%OPENJDK_MAJOR_VERSION%%.zip \
   && apk del --no-cache unzip \
   # Speed up Java with non-blocking /dev/urandom instead of blocking /dev/random
   # https://docs.oracle.com/cd/E13209_01/wlcp/wlss30/configwlss/jvmrand.html
