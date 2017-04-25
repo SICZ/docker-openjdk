@@ -28,9 +28,10 @@ git clone https://github.com/sicz/docker-openjdk
 
 Use command `make` to simplify Docker container development tasks:
 ```bash
-make all        # Destroy running container, build new image and run interactive shell in container
+make all        # Destroy running container, build new image and run shell in container
 make build      # Build new image
-make rebuild    # Refresh Dockerfile and build new image
+make refresh    # Refresh Dockerfile
+make rebuild    # Build new image without caching
 make run        # Run container
 make stop       # Stop running container
 make start      # Start stopped container
@@ -39,6 +40,7 @@ make status     # Show container status
 make logs       # Show container logs
 make logs-tail  # Connect to container logs
 make shell      # Open shell in running container
+make test       # Run tests
 make rm         # Destroy running container
 ```
 
@@ -58,8 +60,18 @@ and place file `10-docker-config.sh` into `docker-entrypoint.d` directory:
 ```bash
 #!/bin/bash
 
-# Docker entrypoint configuration
-DOCKER_COMMAND=MY-COMMAND
+debug0 "Processing $(basename ${DOCKER_ENTRYPOINT:-$0})"
+
+# Default user
+: ${DOCKER_USER:=MY-USER}
+
+# Default command
+: ${DOCKER_COMMAND:=MY-COMMAND}
+
+# First arg is option (-o or --option)
+if [ "${1:0:1}" = '-' ]; then
+	set -- ${DOCKER_COMMAND} "$@"
+fi
 ```
 
 ## Authors
