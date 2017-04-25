@@ -8,7 +8,7 @@ ENV \
   org.label-schema.url="http://openjdk.java.net" \
   org.label-schema.vcs-url="https://github.com/%%DOCKER_PROJECT%%/docker-%%DOCKER_NAME%%"
 
-RUN set -x && apk add --no-cache openjdk%%OPENJDK_MAJOR_VER%%
+RUN set -x && apk add --no-cache openjdk%%OPENJDK_MAJOR_VERSION%%
 
 ENV JAVA_HOME /usr/lib/jvm/java-1.%%OPENJDK_MAJOR_VERSION%%-openjdk
 ENV PATH ${PATH}:${JAVA_HOME}/jre/bin:${JAVA_HOME}/bin
