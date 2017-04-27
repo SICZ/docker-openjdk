@@ -1,12 +1,11 @@
 FROM sicz/baseimage-alpine:3.5
 
-ENV \
-  org.label-schema.schema-version="1.0" \
-  org.label-schema.name="sicz/openjdk" \
-  org.label-schema.description="An OpenJDK image based on Alpine Linux." \
-  org.label-schema.build-date="2017-04-19T22:10:48Z" \
-  org.label-schema.url="http://openjdk.java.net" \
-  org.label-schema.vcs-url="https://github.com/sicz/docker-openjdk"
+ENV org.label-schema.schema-version="1.0"
+ENV org.label-schema.name="sicz/openjdk"
+ENV org.label-schema.description="An OpenJDK image based on Alpine Linux."
+ENV org.label-schema.build-date="2017-04-19T22:10:48Z"
+ENV org.label-schema.url="http://openjdk.java.net"
+ENV org.label-schema.vcs-url="https://github.com/sicz/docker-openjdk"
 
 RUN set -x && apk add --no-cache openjdk8
 
