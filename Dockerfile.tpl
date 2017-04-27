@@ -1,12 +1,11 @@
 FROM sicz/baseimage-alpine:%%BASE_IMAGE_TAG%%
 
-ENV \
-  org.label-schema.schema-version="1.0" \
-  org.label-schema.name="%%DOCKER_PROJECT%%/%%DOCKER_NAME%%" \
-  org.label-schema.description="An OpenJDK image based on Alpine Linux." \
-  org.label-schema.build-date="%%REFRESHED_AT%%" \
-  org.label-schema.url="http://openjdk.java.net" \
-  org.label-schema.vcs-url="https://github.com/%%DOCKER_PROJECT%%/docker-%%DOCKER_NAME%%"
+ENV org.label-schema.schema-version="1.0"
+ENV org.label-schema.name="%%DOCKER_PROJECT%%/%%DOCKER_NAME%%"
+ENV org.label-schema.description="An OpenJDK image based on Alpine Linux."
+ENV org.label-schema.build-date="%%REFRESHED_AT%%"
+ENV org.label-schema.url="http://openjdk.java.net"
+ENV org.label-schema.vcs-url="https://github.com/%%DOCKER_PROJECT%%/docker-%%DOCKER_NAME%%"
 
 RUN set -x && apk add --no-cache openjdk%%OPENJDK_MAJOR_VERSION%%
 
