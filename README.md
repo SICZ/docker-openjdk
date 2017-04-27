@@ -1,5 +1,7 @@
 # docker-openjdk
 
+[![CircleCI Status Badge](https://circleci.com/gh/sicz/docker-openjdk.svg?style=shield&circle-token=380685aec539c72da52d89c935c90fe313c85d3e)](https://circleci.com/gh/sicz/docker-openjdk)
+
 **This Docker image is not aimed at public consumption.
 It exists to serve as a single endpoint for SICZ containers.**
 
