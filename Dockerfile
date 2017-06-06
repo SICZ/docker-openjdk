@@ -46,4 +46,4 @@ RUN set -ex \
   && yum clean all \
   ;
 
-COPY docker-entrypoint.d /docker-entrypoint.d
+COPY config /
