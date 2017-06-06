@@ -1,7 +1,5 @@
 #!/bin/bash
 
-debug0 "Processing $(basename ${DOCKER_ENTRYPOINT:-$0})"
-
 # Convert CA certificate to Java truststore
 if [ -e ${CA_CRT} -a ! -e ${CA_TRUSTSTORE} ]; then
   info "Building truststore ${CA_TRUSTSTORE}"

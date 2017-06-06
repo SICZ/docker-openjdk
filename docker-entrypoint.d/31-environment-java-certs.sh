@@ -1,7 +1,5 @@
 #!/bin/bash
 
-debug0 "Processing $(basename ${DOCKER_ENTRYPOINT:-$0})"
-
 # Default server pkcs12 file location
 if [ -e /run/secrets/server_crt.pem ]; then
   : ${SERVER_P12:=/run/secrets/server_p12.pem}

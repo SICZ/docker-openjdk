@@ -5,13 +5,13 @@
 **This Docker image is not aimed at public consumption.
 It exists to serve as a single endpoint for SICZ containers.**
 
-An OpenJDK base image based on Alpine Linux.
+An OpenJDK base image based on CentOS.
 
 ## Contents
 
 This container only contains essential components:
-- [sicz/baseimage-alpine](https://github.com/sicz/docker-baseimage-alpine) as base image.
-- [openjdk](http://openjdk.java.net) from Alpine Linux packages suite.
+- [sicz/baseimage-centos](https://github.com/sicz/docker-baseimage-centos) as base image.
+- [openjdk](http://openjdk.java.net) from CentOS packages suite.
 
 ## Getting started
 
@@ -30,7 +30,7 @@ git clone https://github.com/sicz/docker-openjdk
 
 Use command `make` to simplify Docker container development tasks:
 ```bash
-make all        # Destroy running container, build new image and run shell in container
+make all        # Destroy running container, build new image and run tests
 make build      # Build new image
 make refresh    # Refresh Dockerfile
 make rebuild    # Build new image without caching
@@ -53,27 +53,16 @@ This container is intended to serve as a base image for other containers.
 You can start with this sample `Dockerfile`:
 ```Dockerfile
 FROM sicz/openjdk:8-jdk
-RUN set -x && apk add --no-cache SOME PACKAGES
+ENV DOCKER_COMMAND=MY_COMMAND
+ENV DOCKER_USER=MY_USER
+# Create an user account
+RUN set -ex && adduser -M -U -u 1000 ${DOCKER_USER}
+# Install some packages
+RUN set -ex && yum update -y && yum install -y SOME PACKAGES && yum clean all
+# Copy your own entrypoint scripts into image
 COPY dockerfile-entrypoint.d /dockerfile-entrypoint.d
-CMD ["MY-COMMAND"]
-```
-
-and place file `10-docker-config.sh` into `docker-entrypoint.d` directory:
-```bash
-#!/bin/bash
-
-debug0 "Processing $(basename ${DOCKER_ENTRYPOINT:-$0})"
-
-# Default user
-: ${DOCKER_USER:=MY-USER}
-
-# Default command
-: ${DOCKER_COMMAND:=MY-COMMAND}
-
-# First arg is option (-o or --option)
-if [ "${1:0:1}" = '-' ]; then
-	set -- ${DOCKER_COMMAND} "$@"
-fi
+# Dockerfile does not allow ${DOCKER_COMMAND} variable in CMD
+CMD ["MY_COMMAND"]
 ```
 
 ## Authors

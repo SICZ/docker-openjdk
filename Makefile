@@ -1,8 +1,8 @@
-ALPINE_VERSION		?= latest
-OPENJDK_VERSION		?= 8-jdk
+CENTOS_VERSION		?= latest
+OPENJDK_VERSION		?= 8-jre
 OPENJDK_MAJOR_VERSION	= $(shell echo $(OPENJDK_VERSION) | sed 's/-.*//')
 
-BASE_IMAGE_TAG		= $(ALPINE_VERSION)
+BASE_IMAGE_TAG		= $(CENTOS_VERSION)
 
 DOCKER_PROJECT		= sicz
 DOCKER_NAME		= openjdk
@@ -16,7 +16,7 @@ DOCKER_RUN_OPTS		= $(DOCKER_SHELL_OPTS) \
 .PHONY: all build rebuild deploy run up destroy down clean rm start stop restart
 .PHONY: status logs shell refresh test
 
-all: destroy build deploy logs shell
+all: destroy build deploy logs test
 build: docker-build
 rebuild: docker-rebuild
 deploy run up: docker-deploy
