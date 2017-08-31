@@ -5,7 +5,7 @@
 **This project is not aimed at public consumption.
 It exists to serve as a single endpoint for SICZ containers.**
 
-An OpenJDK base image based on CentOS.
+An OpenJDK base images.
 
 ## Contents
 
