@@ -24,7 +24,7 @@ DOCKER_REBUILD_TARGET	?= docker-rebuild
 DOCKER_EXECUTOR		?= compose
 
 # Use the same service name for all configurations
-SERVICE_NAME		?= openjdk
+SERVICE_NAME		?= container
 
 # Default configuration with Simple CA
 COMPOSE_VARS		+= JAVA_KEYSTORE_PWD_FILE \
