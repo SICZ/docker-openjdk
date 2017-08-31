@@ -26,14 +26,14 @@ describe "Docker image", :test => :docker_image do
       packages += [
         [
           "openjdk#{ENV["OPENJDK_PRODUCT_VERSION"]}-jre-base",
-          "#{ENV["OPENJDK_ALPINE_VERSION"]}",
+          "#{ENV["OPENJDK_PRODUCT_VERSION"]}.#{ENV["OPENJDK_UPDATE_VERSION"]}",
         ],
       ]
       if ENV["OPENJDK_EDITION"] == "jdk" then
         packages += [
           [
-            "java-1.#{ENV["OPENJDK_PRODUCT_VERSION"]}.0-openjdk-devel",
-            "1.#{ENV["OPENJDK_PRODUCT_VERSION"]}.0.#{ENV["OPENJDK_UPDATE_VERSION"]}",
+            "openjdk#{ENV["OPENJDK_PRODUCT_VERSION"]}",
+            "#{ENV["OPENJDK_PRODUCT_VERSION"]}.#{ENV["OPENJDK_UPDATE_VERSION"]}",
           ],
         ]
       end

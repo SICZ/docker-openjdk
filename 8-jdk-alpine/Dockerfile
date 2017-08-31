@@ -26,5 +26,5 @@ ENV JAVA_HOME="/usr/lib/jvm/default-jvm"
 ENV PATH="${JAVA_HOME}/bin:${PATH}"
 
 RUN set -exo pipefail; \
-  apk add --no-cache "openjdk${OPENJDK_PRODUCT_VERSION}-devel>${OPENJDK_PRODUCT_VERSION}.${OPENJDK_UPDATE_VERSION}"; \
+  apk add --no-cache "openjdk${OPENJDK_PRODUCT_VERSION}>${OPENJDK_PRODUCT_VERSION}.${OPENJDK_UPDATE_VERSION}"; \
   javac -version
