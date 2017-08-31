@@ -1,34 +1,59 @@
-CENTOS_VERSION		?= latest
-OPENJDK_VERSION		?= 8-jre
-OPENJDK_MAJOR_VERSION	= $(shell echo $(OPENJDK_VERSION) | sed 's/-.*//')
+### SHELL ######################################################################
 
-BASE_IMAGE_TAG		= $(CENTOS_VERSION)
+# Replace Debian Almquist Shell with Bash
+ifeq ($(realpath $(SHELL)),/bin/dash)
+SHELL   		:= /bin/bash
+endif
 
-DOCKER_PROJECT		= sicz
-DOCKER_NAME		= openjdk
-DOCKER_TAG		= $(OPENJDK_VERSION)
-DOCKER_FILE_SUB		+= OPENJDK_MAJOR_VERSION
+# Exit immediately if a command exits with a non-zero exit status
+# TODO: .SHELLFLAGS does not exists on obsoleted macOS X-Code make
+# .SHELLFLAGS		= -ec
+SHELL			+= -e
 
-DOCKER_RUN_OPTS		= $(DOCKER_SHELL_OPTS) \
-			  -v /var/run/docker.sock:/var/run/docker.sock
+### MAKE_TARGETS ###############################################################
 
+# Docker image variants
+DOCKER_VARIANTS		= 8-jre-centos \
+			  8-jdk-centos
 
-.PHONY: all build rebuild deploy run up destroy down clean rm start stop restart
-.PHONY: status logs shell refresh test
+# Make targets propagated to all Docker image variants
+DOCKER_VARIANT_TARGETS	= build-all \
+			  rebuild-all \
+			  ci-all \
+			  clean-all \
+			  docker-pull-all \
+			  docker-pull-dependencies-all \
+			  docker-pull-image-all \
+			  docker-pull-testimage-all \
+			  docker-push-all
 
-all: destroy build deploy logs test
-build: docker-build
-rebuild: docker-rebuild
-deploy run up: docker-deploy
-destroy down clean rm: docker-destroy
-start: docker-start
-stop: docker-stop
-restart: docker-stop docker-start
-status: docker-status
-logs: docker-logs
-logs-tail: docker-logs-tail
-shell: docker-shell
-refresh: docker-refresh
-test: docker-test
+# Project home directory
+export PROJECT_DIR	= $(CURDIR)
 
-include ../Mk/docker.container.mk
+################################################################################
+
+# Build all images and run all tests
+.PHONY: all
+all: ci-all
+
+# Remove all containers and work files
+.PHONY: clean
+clean: clean-all
+
+# Subdir targets
+.PHONY: $(DOCKER_VARIANT_TARGETS)
+$(DOCKER_VARIANT_TARGETS):
+	@for SUBDIR in $(DOCKER_VARIANTS); do \
+		cd $(PROJECT_DIR)/$${SUBDIR}; \
+		$(MAKE) $@; \
+	done
+
+### CIRCLE_CI ##################################################################
+
+# Update yhe Dockerspec tag in the CircleCI configuration
+.PHONY: ci-update-config
+ci-update-config:
+	@cd 8-jre-alpine; \
+	$(MAKE) $@
+
+################################################################################

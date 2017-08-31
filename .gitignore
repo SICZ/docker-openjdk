@@ -1,8 +1,10 @@
 # https://git-scm.com/docs/gitignore
 
-# Info about running containers
-.container_id
-.container_exists
+# Ignore backup files
+*~
 
-# Local Makefile
-docker.local.mk
+# Info about running containers
+.docker-*
+
+# Simple CA secrets
+secrets
