@@ -23,13 +23,33 @@ jobs:
             curl -sSL https://github.com/SICZ/Mk/archive/master.tar.gz | tar -xzf -
             mv Mk-master Mk
       - run:
+          name: sicz/openjdk:8-jre-alpine-latest
+          working_directory: 8-jre-alpine
+          command: |
+            make ci
+      - run:
+          name: sicz/openjdk:8-jre-alpine-devel
+          working_directory: 8-jre-alpine/devel
+          command: |
+            make ci
+      - run:
+          name: sicz/openjdk:8-jdk-alpine-latest
+          working_directory: 8-jdk-alpine
+          command: |
+            make ci
+      - run:
+          name: sicz/openjdk:8-jdk-alpine-devel
+          working_directory: 8-jdk-alpine/devel
+          command: |
+            make ci
+      - run:
           name: sicz/openjdk:8-jre-centos-latest
           working_directory: 8-jre-centos
           command: |
             make ci
       - run:
           name: sicz/openjdk:8-jre-centos-devel
-          working_directory: 8-jre-centos-devel
+          working_directory: 8-jre-centos/devel
           command: |
             make ci
       - run:
@@ -39,7 +59,7 @@ jobs:
             make ci
       - run:
           name: sicz/openjdk:8-jdk-centos-devel
-          working_directory: 8-jdk-centos-devel
+          working_directory: 8-jdk-centos/devel
           command: |
             make ci
       - deploy:
