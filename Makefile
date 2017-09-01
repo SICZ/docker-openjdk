@@ -13,7 +13,9 @@ SHELL			+= -e
 ### MAKE_TARGETS ###############################################################
 
 # Docker image variants
-DOCKER_VARIANTS		= 8-jre-centos \
+DOCKER_VARIANTS		= 8-jre-alpine \
+			  8-jdk-alpine \
+			  8-jre-centos \
 			  8-jdk-centos
 
 # Make targets propagated to all Docker image variants
