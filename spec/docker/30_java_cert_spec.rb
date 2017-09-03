@@ -20,7 +20,7 @@ describe "Java certificate", :test => :java_cert do
   keystore          = ENV["JAVA_KEYSTORE_FILE"]         || "/etc/ssl/private/keystore.jks"
   keystore_pwd      = ENV["JAVA_KEYSTORE_PWD_FILE"]     || "/etc/ssl/private/keystore.pwd"
   keystore_user     = ENV["JAVA_KEYSTORE_FILE_USER"]    || "root"
-  keystore_group    = ENV["JAVA_KEYSTORE_FILE_GROUP"]   ||"root"
+  keystore_group    = ENV["JAVA_KEYSTORE_FILE_GROUP"]   || "root"
   keystore_mode     = ENV["JAVA_KEYSTORE_FILE_MODE"]    || 440
 
   ### TRUSTSTORE_PASSPHRASE ####################################################
