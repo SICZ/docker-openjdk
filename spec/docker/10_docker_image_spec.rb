@@ -75,16 +75,22 @@ describe "Docker image", :test => :docker_image do
         755, "root", "root",
         [:be_file]
       ],
-      [
-        "/docker-entrypoint.d/37-environment-openjdk.sh",
-        644, "root", "root",
-        [:be_file, :eq_sha256sum]],
-      [
-        "/docker-entrypoint.d/47-java-keystore.sh",
-        644, "root", "root",
-        [:be_file, :eq_sha256sum]
-      ],
     ]
+
+    case ENV["OPENJDK_EDITION"]
+    when "jre"
+      files += [
+        [
+          "/docker-entrypoint.d/37-environment-openjdk.sh",
+          644, "root", "root",
+          [:be_file, :eq_sha256sum]],
+        [
+          "/docker-entrypoint.d/47-java-keystore.sh",
+          644, "root", "root",
+          [:be_file, :eq_sha256sum]
+        ],
+      ]
+    end
 
     case ENV["BASE_IMAGE_OS"]
     when "alpine"
@@ -128,7 +134,7 @@ describe "Docker image", :test => :docker_image do
         it { is_expected.to be_grouped_into(group) } unless group.nil?
         its(:sha256sum) do
           is_expected.to eq(
-              Digest::SHA256.file("config/#{subject.name}").to_s
+              Digest::SHA256.file("#{ENV["OPENJDK_EDITION"]}/config/#{subject.name}").to_s
           )
         end if expectations.include?(:eq_sha256sum)
         if ! matches.nil? then
