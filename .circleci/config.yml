@@ -13,8 +13,7 @@ jobs:
       - run:
           name: Remote Docker engine version and images
           command: |
-            docker --version
-            docker-compose --version
+            docker version
             docker image ls
       - run:
           name: Checkout make files
@@ -23,43 +22,23 @@ jobs:
             curl -sSL https://github.com/SICZ/Mk/archive/master.tar.gz | tar -xzf -
             mv Mk-master Mk
       - run:
-          name: sicz/openjdk:8-jre-alpine-latest
-          working_directory: 8-jre-alpine
+          name: sicz/openjdk:8u141-jre-alpine
+          working_directory: 8u141/jre-alpine
           command: |
             make ci
       - run:
-          name: sicz/openjdk:8-jre-alpine-devel
-          working_directory: 8-jre-alpine/devel
+          name: sicz/openjdk:8u141-jdk-alpine
+          working_directory: 8u141/jdk-alpine
           command: |
             make ci
       - run:
-          name: sicz/openjdk:8-jdk-alpine-latest
-          working_directory: 8-jdk-alpine
+          name: sicz/openjdk:8u141/jre-centos
+          working_directory: 8u141/jre-centos
           command: |
             make ci
       - run:
-          name: sicz/openjdk:8-jdk-alpine-devel
-          working_directory: 8-jdk-alpine/devel
-          command: |
-            make ci
-      - run:
-          name: sicz/openjdk:8-jre-centos-latest
-          working_directory: 8-jre-centos
-          command: |
-            make ci
-      - run:
-          name: sicz/openjdk:8-jre-centos-devel
-          working_directory: 8-jre-centos/devel
-          command: |
-            make ci
-      - run:
-          name: sicz/openjdk:8-jdk-centos-latest
-          working_directory: 8-jdk-centos
-          command: |
-            make ci
-      - run:
-          name: sicz/openjdk:8-jdk-centos-devel
-          working_directory: 8-jdk-centos/devel
+          name: sicz/openjdk:8u141/jdk-centos
+          working_directory: 8u141/jdk-centos
           command: |
             make ci
       - deploy:
@@ -67,5 +46,5 @@ jobs:
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               docker login -u ${DOCKER_HUB_USER} -p ${DOCKER_HUB_PASSWD}
-              make docker-push-all
+              make docker-push
             fi

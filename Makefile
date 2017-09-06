@@ -13,49 +13,31 @@ SHELL			+= -e
 ### MAKE_TARGETS ###############################################################
 
 # Docker image variants
-DOCKER_VARIANTS		= 8-jre-alpine \
-			  8-jdk-alpine \
-			  8-jre-centos \
-			  8-jdk-centos
+DOCKER_VARIANTS		= 8u141
 
 # Make targets propagated to all Docker image variants
-DOCKER_VARIANT_TARGETS	= build-all \
-			  rebuild-all \
-			  ci-all \
-			  clean-all \
-			  docker-pull-all \
-			  docker-pull-dependencies-all \
-			  docker-pull-image-all \
-			  docker-pull-testimage-all \
-			  docker-push-all
-
-# Project home directory
-export PROJECT_DIR	= $(CURDIR)
+DOCKER_VARIANT_TARGETS	= build \
+			  rebuild \
+			  ci \
+			  clean \
+			  docker-pull \
+			  docker-pull-dependencies \
+			  docker-pull-image \
+			  docker-pull-testimage \
+			  docker-push
 
 ################################################################################
 
 # Build all images and run all tests
 .PHONY: all
-all: ci-all
-
-# Remove all containers and work files
-.PHONY: clean
-clean: clean-all
+all: ci
 
 # Subdir targets
 .PHONY: $(DOCKER_VARIANT_TARGETS)
 $(DOCKER_VARIANT_TARGETS):
-	@for SUBDIR in $(DOCKER_VARIANTS); do \
-		cd $(PROJECT_DIR)/$${SUBDIR}; \
+	@for DOCKER_VARIANT in $(DOCKER_VARIANTS); do \
+		cd $(CURDIR)/$${DOCKER_VARIANT}; \
 		$(MAKE) $@; \
 	done
-
-### CIRCLE_CI ##################################################################
-
-# Update yhe Dockerspec tag in the CircleCI configuration
-.PHONY: ci-update-config
-ci-update-config:
-	@cd 8-jre-alpine; \
-	$(MAKE) $@
 
 ################################################################################

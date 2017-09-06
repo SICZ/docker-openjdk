@@ -41,4 +41,4 @@ RUN set -exo pipefail; \
     -e 's;#networkaddress.cache.ttl=-1;networkaddress.cache.ttl=10;' \
     ${JRE_HOME}/lib/security/java.security
 
-COPY config /
+COPY jre/config /

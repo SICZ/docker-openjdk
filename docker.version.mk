@@ -5,26 +5,20 @@ DOCKER_PROJECT_DESC	?= OpenJDK $(OPENJDK_PRODUCT_VERSION) $(OPENJDK_EDITION_DESC
 DOCKER_PROJECT_URL	?= http://openjdk.java.net
 
 DOCKER_NAME		?= openjdk
+DOCKER_IMAGE_TAG	?= $(OPENJDK_PRODUCT_VERSION)u$(OPENJDK_UPDATE_VERSION)-$(OPENJDK_EDITION)-$(BASE_IMAGE_OS)
 
 ### BUILD ######################################################################
+
+VARIANT_DIR		?= $(PROJECT_DIR)/$(OPENJDK_EDITION)/$(BASE_IMAGE_OS)
 
 # Docker image build variables
 BUILD_VARS		+= OPENJDK_PRODUCT_VERSION \
 			   OPENJDK_UPDATE_VERSION
 
-# Allows a change of the ci/build/restore targets if the development version
-# is the same as the latest version
-DOCKER_CI_TARGET	?= all
-DOCKER_BUILD_TARGET	?= docker-build
-DOCKER_REBUILD_TARGET	?= docker-rebuild
-
 ### DOCKER_EXECUTOR ############################################################
 
 # Use the Docker Compose executor
 DOCKER_EXECUTOR		?= compose
-
-# Use the same service name for all configurations
-SERVICE_NAME		?= container
 
 # Default configuration with Simple CA
 COMPOSE_VARS		+= JAVA_KEYSTORE_PWD_FILE \
@@ -34,6 +28,9 @@ COMPOSE_VARS		+= JAVA_KEYSTORE_PWD_FILE \
 			   SIMPLE_CA_IMAGE
 TEST_VARS		+= BASE_IMAGE_OS \
 			   OPENJDK_EDITION
+
+# Use the same service name for all configurations
+SERVICE_NAME		?= container
 
 JAVA_KEYSTORE_PWD_FILE	?= /etc/ssl/private/keystore.pwd
 JAVA_TRUSTSTORE_PWD_FILE ?= /etc/ssl/certs/truststore.pwd
@@ -74,12 +71,10 @@ MAKE_VARS		?= GITHUB_MAKE_VARS \
 			   OPENJDK_MAKE_VARS \
 			   DOCKER_IMAGE_MAKE_VARS \
 			   BUILD_MAKE_VARS \
-			   BUILD_TARGETS_MAKE_VARS \
 			   EXECUTOR_MAKE_VARS \
 			   CONFIG_MAKE_VARS \
 			   SHELL_MAKE_VARS \
-			   DOCKER_REGISTRY_MAKE_VARS \
-			   DOCKER_VERSION_MAKE_VARS
+			   DOCKER_REGISTRY_MAKE_VARS
 
 define BASE_IMAGE_OS_MAKE_VARS
 BASE_IMAGE_OS		$(BASE_IMAGE_OS)
@@ -94,13 +89,6 @@ OPENJDK_UPDATE_VERSION:	$(OPENJDK_UPDATE_VERSION)
 endef
 export OPENJDK_MAKE_VARS
 
-define BUILD_TARGETS_MAKE_VARS
-DOCKER_CI_TARGET:	$(DOCKER_CI_TARGET)
-DOCKER_BUILD_TARGET:	$(DOCKER_BUILD_TARGET)
-DOCKER_REBUILD_TARGET:	$(DOCKER_REBUILD_TARGET)
-endef
-export BUILD_TARGETS_MAKE_VARS
-
 define CONFIG_MAKE_VARS
 SIMPLE_CA_IMAGE_NAME:	$(SIMPLE_CA_IMAGE_NAME)
 SIMPLE_CA_IMAGE_TAG:	$(SIMPLE_CA_IMAGE_TAG)
@@ -110,16 +98,11 @@ SIMPLE_CA_CONTAINER_NAME: $(SIMPLE_CA_CONTAINER_NAME)
 
 JAVA_KEYSTORE_PWD_FILE:	$(JAVA_KEYSTORE_PWD_FILE)
 JAVA_TRUSTSTORE_PWD_FILE: $(JAVA_TRUSTSTORE_PWD_FILE)
+
+SERVER_CRT_HOST:	$(SERVER_CRT_HOST)
+SERVER_KEY_PWD_FILE:	$(SERVER_KEY_PWD_FILE)
 endef
 export CONFIG_MAKE_VARS
-
-### DOCKER_VERSION_TARGETS #####################################################
-
-# Make targets propagated to all Docker image versions
-DOCKER_ALL_VERSIONS_TARGETS ?= build rebuild ci clean
-
-# Docker image variant directory
-DOCKER_VARIANT_DIR	?= $(PROJECT_DIR)/$(OPENJDK_PRODUCT_VERSION)-$(OPENJDK_EDITION)-$(BASE_IMAGE_OS)
 
 ### MAKE_TARGETS #############################################################
 
@@ -129,20 +112,18 @@ all: build clean start wait logs test
 
 # Build a new image and run tests for all configurations
 .PHONY: ci
-ci: $(DOCKER_CI_TARGET)
-	@true
+ci: all
+	@$(MAKE) clean
 
 ### BUILD_TARGETS ##############################################################
 
 # Build a new image with using the Docker layer caching
 .PHONY: build
-build: $(DOCKER_BUILD_TARGET)
-	@true
+build: docker-build
 
 # Build a new image without using the Docker layer caching
 .PHONY: rebuild
-rebuild: $(DOCKER_REBUILD_TARGET)
-	@true
+rebuild: docker-build
 
 ### EXECUTOR_TARGETS ###########################################################
 
