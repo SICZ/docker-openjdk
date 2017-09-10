@@ -106,11 +106,11 @@ export CONFIG_MAKE_VARS
 
 ### MAKE_TARGETS #############################################################
 
-# Build a new image and run tests for current configuration
+# Build a new image and run tests
 .PHONY: all
-all: build clean start wait logs test
+all: clean build start wait logs test
 
-# Build a new image and run tests for all configurations
+# Build a new image and run tests
 .PHONY: ci
 ci: all
 	@$(MAKE) clean
