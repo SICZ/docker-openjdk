@@ -1,5 +1,6 @@
 ### DOCKER_VERSIONS ###########################################################
 
+# Docker image versions
 DOCKER_VERSIONS		?= jre-alpine \
 			   jdk-alpine \
 			   jre-centos \
