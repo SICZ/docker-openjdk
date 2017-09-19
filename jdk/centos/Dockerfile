@@ -19,11 +19,11 @@ LABEL \
   org.label-schema.vcs-ref="${VCS_REF}" \
   org.label-schema.build-date="${BUILD_DATE}"
 
-ARG OPENJDK_PRODUCT_VERSION
-ARG OPENJDK_UPDATE_VERSION
+ARG JAVA_HOME="/usr/lib/jvm/java"
 
-ENV JAVA_HOME=/usr/lib/jvm/java
-ENV PATH="${JAVA_HOME}/bin:${PATH}"
+ENV \
+  JAVA_HOME="${JAVA_HOME}" \
+  PATH="${JAVA_HOME}/bin:${PATH}"
 
 RUN set -exo pipefail; \
   yum install -y "java-1.${OPENJDK_PRODUCT_VERSION}.0-openjdk-devel-1:1.${OPENJDK_PRODUCT_VERSION}.0.${OPENJDK_UPDATE_VERSION}-*"; \
