@@ -29,9 +29,6 @@ COMPOSE_VARS		+= JAVA_KEYSTORE_PWD_FILE \
 TEST_VARS		+= BASE_IMAGE_OS \
 			   OPENJDK_EDITION
 
-# Use the same service name for all configurations
-SERVICE_NAME		?= container
-
 JAVA_KEYSTORE_PWD_FILE	?= /etc/ssl/private/keystore.pwd
 JAVA_TRUSTSTORE_PWD_FILE ?= /etc/ssl/certs/truststore.pwd
 SERVER_CRT_HOST		?= $(SERVICE_NAME).local
@@ -43,12 +40,13 @@ SERVER_KEY_PWD_FILE	?= /etc/ssl/private/server.pwd
 DOCKER_IMAGE_DEPENDENCIES += $(SIMPLE_CA_IMAGE)
 
 # Simple CA image
-SIMPLE_CA_IMAGE_NAME	?= sicz/simple-ca
+SIMPLE_CA_NAME		?= simple-ca
+SIMPLE_CA_IMAGE_NAME	?= $(DOCKER_PROJECT)/$(SIMPLE_CA_NAME)
 SIMPLE_CA_IMAGE_TAG	?= latest
 SIMPLE_CA_IMAGE		?= $(SIMPLE_CA_IMAGE_NAME):$(SIMPLE_CA_IMAGE_TAG)
 
 # Simple CA service name in Docker Compose file
-SIMPLE_CA_SERVICE_NAME	?= $(shell echo $(SIMPLE_CA_IMAGE_NAME) | sed -E -e "s|^.*/||" -e "s/[^[:alnum:]_]+/_/g")
+SIMPLE_CA_SERVICE_NAME	?= $(shell echo $(SIMPLE_CA_NAME) | sed -E -e "s/[^[:alnum:]_]+/_/g")
 
 # Simple CA container name
 ifeq ($(DOCKER_EXECUTOR),container)
