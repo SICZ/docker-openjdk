@@ -82,12 +82,10 @@ describe "Docker image", :test => :docker_image do
       files += [
         [
           "/docker-entrypoint.d/37-java-environment.sh",
-          644, "root", "root",
-          [:be_file, :eq_sha256sum]],
+          644, "root", "root", [:be_file, :eq_sha256sum]],
         [
           "/docker-entrypoint.d/47-java-certs.sh",
-          644, "root", "root",
-          [:be_file, :eq_sha256sum]
+          644, "root", "root", [:be_file, :eq_sha256sum]
         ],
       ]
     end
@@ -97,8 +95,7 @@ describe "Docker image", :test => :docker_image do
       files += [
         [
           "/usr/lib/jvm/default-jvm/jre/lib/security/java.security",
-          nil, nil,    nil,
-          nil,
+          nil, nil, nil, [:be_file],
           [
             "^securerandom.source=file:/dev/urandom$",
             "^networkaddress.cache.ttl=10$",
@@ -111,8 +108,7 @@ describe "Docker image", :test => :docker_image do
       files += [
         [
           "/usr/lib/jvm/jre/lib/security/java.security",
-          nil, nil,    nil,
-          nil,
+          nil, nil, nil, [:be_file],
           [
             "^securerandom.source=file:/dev/urandom$",
             "^networkaddress.cache.ttl=10$",
