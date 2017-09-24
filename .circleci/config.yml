@@ -1,97 +1,50 @@
 version: 2
 jobs:
-  build: &build
+  build:
     docker:
       - image: sicz/dockerspec
+    environment:
+      - MAKEFLAGS=--no-print-directory
+      - RSPEC_FORMAT=doc
     steps:
       - checkout
+      - setup_remote_docker:
+          version: 17.06.0-ce
+      - run:
+          name: Remote Docker engine version and images
+          command: |
+            docker version
+            docker image ls
       - run:
           name: Checkout make files
           command: |
             cd ..
             curl -sSL https://github.com/SICZ/Mk/archive/master.tar.gz | tar -xzf -
             mv Mk-master Mk
-      - setup_remote_docker:
-          version: 17.06.0-ce
       - run:
-          name: Build and test JRE image
+          name: sicz/openjdk:8u144-jre-alpine
+          working_directory: 8u144/jre-alpine
           command: |
-            cd ${OPENJDK_VERSION}/jre-${BASE_IMAGE_OS}
             make ci
       - run:
-          name: Build and test JDK image
+          name: sicz/openjdk:8u144-jdk-alpine
+          working_directory: 8u144/jdk-alpine
           command: |
-            cd ${OPENJDK_VERSION}/jdk-${BASE_IMAGE_OS}
             make ci
-      - deploy:
-          name: Save JRE image to workspace
-          command: |
-            cd ${OPENJDK_VERSION}/jre-${BASE_IMAGE_OS}
-            mkdir -p /tmp/workspace
-            make docker-save-image DOCKER_IMAGE_DEPOT=/tmp/workspace
-            ls -lh /tmp/workspace
-      - deploy:
-          name: Save JDK image to workspace
-          command: |
-            cd ${OPENJDK_VERSION}/jdk-${BASE_IMAGE_OS}
-            mkdir -p /tmp/workspace
-            make docker-save-image DOCKER_IMAGE_DEPOT=/tmp/workspace
-            ls -lh /tmp/workspace
-      - persist_to_workspace:
-          root: /tmp/workspace
-          paths:
-            - "*.image"
-
-  8u144-alpine:
-    <<: *build
-    environment:
-      - OPENJDK_VERSION=8u144
-      - BASE_IMAGE_OS=alpine
-      - MAKEFLAGS=--no-print-directory
-      - RSPEC_FORMAT=doc
-
-  8u144-centos:
-    <<: *build
-    environment:
-      - OPENJDK_VERSION=8u144
-      - BASE_IMAGE_OS=centos
-      - MAKEFLAGS=--no-print-directory
-      - RSPEC_FORMAT=doc
-
-  publish:
-    docker:
-      - image: sicz/dockerspec
-    environment:
-      - MAKEFLAGS=--no-print-directory
-    steps:
-      - checkout
       - run:
-          name: Checkout make files
+          name: sicz/openjdk:8u144/jre-centos
+          working_directory: 8u144/jre-centos
           command: |
-            cd ..
-            curl -sSL https://github.com/SICZ/Mk/archive/master.tar.gz | tar -xzf -
-            mv Mk-master Mk
-      - setup_remote_docker:
-          version: 17.06.0-ce
-      - attach_workspace:
-          at: /tmp/workspace
+            make ci
+      - run:
+          name: sicz/openjdk:8u144/jdk-centos
+          working_directory: 8u144/jdk-centos
+          command: |
+            make ci
       - deploy:
           name: Push images to the Docker Hub
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              make docker-load-image DOCKER_IMAGE_DEPOT=/tmp/workspace
               docker login -u ${DOCKER_HUB_USER} -p ${DOCKER_HUB_PASSWD}
               make docker-push
             fi
-
-workflows:
-  version: 2
-
-  build:
-    jobs:
-      - 8u144-alpine
-      - 8u144-centos
-      - publish:
-          requires:
-            - 8u144-alpine
-            - 8u144-centos
