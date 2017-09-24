@@ -29,9 +29,8 @@ fi
 if [ -e /run/secrets/${JAVA_TRUSTSTORE_PWD_FILE_NAME} ]; then
   : ${JAVA_KEYSTORE_PWD_FILE:=/run/secrets/${JAVA_TRUSTSTORE_PWD_FILE_NAME}}
 elif [ -e ${JAVA_TRUSTSTORE_DIR}/${JAVA_TRUSTSTORE_PWD_FILE_NAME} ]; then
-  : ${JAVA_KEYSTORE_FILE:=${JAVA_TRUSTSTORE_DIR}/${JAVA_TRUSTSTORE_PWD_FILE_NAME}}
+  : ${JAVA_KEYSTORE_PWD_FILE:=${JAVA_TRUSTSTORE_DIR}/${JAVA_TRUSTSTORE_PWD_FILE_NAME}}
 fi
-: ${JAVA_KEYSTORE_PWD_FILE:=${SERVER_KEY_PWD_FILE}}
 
 ### JAVA_KEYSTORE_FILE #########################################################
 
@@ -53,7 +52,7 @@ fi
 if [ -e /run/secrets/${JAVA_KEYSTORE_PWD_FILE_NAME} ]; then
   : ${JAVA_KEYSTORE_PWD_FILE:=/run/secrets/${JAVA_KEYSTORE_PWD_FILE_NAME}}
 elif [ -e ${JAVA_KEYSTORE_DIR}/${JAVA_KEYSTORE_PWD_FILE_NAME} ]; then
-  : ${JAVA_KEYSTORE_FILE:=${JAVA_KEYSTORE_DIR}/${JAVA_KEYSTORE_PWD_FILE_NAME}}
+  : ${JAVA_KEYSTORE_PWD_FILE:=${JAVA_KEYSTORE_DIR}/${JAVA_KEYSTORE_PWD_FILE_NAME}}
 fi
 
 ################################################################################
