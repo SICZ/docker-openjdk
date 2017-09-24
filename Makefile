@@ -24,7 +24,9 @@ DOCKER_VARIANT_TARGETS	= build \
 			  docker-pull-dependencies \
 			  docker-pull-image \
 			  docker-pull-testimage \
-			  docker-push
+			  docker-push \
+			  docker-load-image \
+			  docker-save-image
 
 ################################################################################
 

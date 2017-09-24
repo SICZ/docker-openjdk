@@ -81,11 +81,11 @@ describe "Docker image", :test => :docker_image do
     when "jre"
       files += [
         [
-          "/docker-entrypoint.d/37-environment-openjdk.sh",
+          "/docker-entrypoint.d/37-java-environment.sh",
           644, "root", "root",
           [:be_file, :eq_sha256sum]],
         [
-          "/docker-entrypoint.d/47-java-keystore.sh",
+          "/docker-entrypoint.d/47-java-certs.sh",
           644, "root", "root",
           [:be_file, :eq_sha256sum]
         ],
