@@ -14,14 +14,32 @@ jobs:
       - setup_remote_docker:
           version: 17.06.0-ce
       - run:
-          name: Build and test Docker image
+          name: Build and test JRE image
           command: |
-            cd ${CI_DIR}
+            cd ${OPENJDK_VERSION}/jre-${BASE_IMAGE_OS}
             make ci
-      - deploy:
-          name: Save Docker image to workspace
+            mkdir -p /tmp/workspace
+            make docker-save-image DOCKER_IMAGE_DEPOT=/tmp/workspace
+            ls -lh /tmp/workspace
+      - run:
+          name: Build and test JDK image
           command: |
-            cd ${CI_DIR}
+            cd ${OPENJDK_VERSION}/jdk-${BASE_IMAGE_OS}
+            make ci
+            mkdir -p /tmp/workspace
+            make docker-save-image DOCKER_IMAGE_DEPOT=/tmp/workspace
+            ls -lh /tmp/workspace
+      - deploy:
+          name: Save JRE image to workspace
+          command: |
+            cd ${OPENJDK_VERSION}/jre-${BASE_IMAGE_OS}
+            mkdir -p /tmp/workspace
+            make docker-save-image DOCKER_IMAGE_DEPOT=/tmp/workspace
+            ls -lh /tmp/workspace
+      - deploy:
+          name: Save JDK image to workspace
+          command: |
+            cd ${OPENJDK_VERSION}/jdk-${BASE_IMAGE_OS}
             mkdir -p /tmp/workspace
             make docker-save-image DOCKER_IMAGE_DEPOT=/tmp/workspace
             ls -lh /tmp/workspace
@@ -30,31 +48,19 @@ jobs:
           paths:
             - "*.image"
 
-  8u141-jre-alpine:
+  8u141-alpine:
     <<: *build
     environment:
-      - CI_DIR=8u141/jre-alpine
+      - OPENJDK_VERSION=8u141
+      - BASE_IMAGE_OS=alpine
       - MAKEFLAGS=--no-print-directory
       - RSPEC_FORMAT=doc
 
-  8u141-jdk-alpine:
+  8u141-centos:
     <<: *build
     environment:
-      - CI_DIR=8u141/jdk-alpine
-      - MAKEFLAGS=--no-print-directory
-      - RSPEC_FORMAT=doc
-
-  8u141-jre-centos:
-    <<: *build
-    environment:
-      - CI_DIR=8u141/jre-centos
-      - MAKEFLAGS=--no-print-directory
-      - RSPEC_FORMAT=doc
-
-  8u141-jdk-centos:
-    <<: *build
-    environment:
-      - CI_DIR=8u141/jdk-centos
+      - OPENJDK_VERSION=8u141
+      - BASE_IMAGE_OS=centos
       - MAKEFLAGS=--no-print-directory
       - RSPEC_FORMAT=doc
 
@@ -89,17 +95,9 @@ workflows:
 
   build:
     jobs:
-      - 8u141-jre-alpine
-      - 8u141-jdk-alpine:
-          requires:
-            - 8u141-jre-alpine
-      - 8u141-jre-centos
-      - 8u141-jdk-centos:
-          requires:
-            - 8u141-jre-centos
+      - 8u141-alpine
+      - 8u141-centos
       - publish:
           requires:
-            - 8u141-jre-alpine
-            - 8u141-jdk-alpine
-            - 8u141-jre-centos
-            - 8u141-jdk-centos
+            - 8u141-alpine
+            - 8u141-centos
