@@ -95,7 +95,7 @@ workflows:
             - 8u141-jre-alpine
       - 8u141-jre-centos:
           requires:
-            - 8u141-jre-alpine
+            - 8u141-jre-centos
       - 8u141-jdk-centos
       - publish:
           requires:
