@@ -18,17 +18,11 @@ jobs:
           command: |
             cd ${OPENJDK_VERSION}/jre-${BASE_IMAGE_OS}
             make ci
-            mkdir -p /tmp/workspace
-            make docker-save-image DOCKER_IMAGE_DEPOT=/tmp/workspace
-            ls -lh /tmp/workspace
       - run:
           name: Build and test JDK image
           command: |
             cd ${OPENJDK_VERSION}/jdk-${BASE_IMAGE_OS}
             make ci
-            mkdir -p /tmp/workspace
-            make docker-save-image DOCKER_IMAGE_DEPOT=/tmp/workspace
-            ls -lh /tmp/workspace
       - deploy:
           name: Save JRE image to workspace
           command: |
