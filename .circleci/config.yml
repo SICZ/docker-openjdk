@@ -48,18 +48,18 @@ jobs:
           paths:
             - "*.image"
 
-  8u141-alpine:
+  8u144-alpine:
     <<: *build
     environment:
-      - OPENJDK_VERSION=8u141
+      - OPENJDK_VERSION=8u144
       - BASE_IMAGE_OS=alpine
       - MAKEFLAGS=--no-print-directory
       - RSPEC_FORMAT=doc
 
-  8u141-centos:
+  8u144-centos:
     <<: *build
     environment:
-      - OPENJDK_VERSION=8u141
+      - OPENJDK_VERSION=8u144
       - BASE_IMAGE_OS=centos
       - MAKEFLAGS=--no-print-directory
       - RSPEC_FORMAT=doc
@@ -95,9 +95,9 @@ workflows:
 
   build:
     jobs:
-      - 8u141-alpine
-      - 8u141-centos
+      - 8u144-alpine
+      - 8u144-centos
       - publish:
           requires:
-            - 8u141-alpine
-            - 8u141-centos
+            - 8u144-alpine
+            - 8u144-centos

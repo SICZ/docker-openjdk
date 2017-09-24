@@ -1,7 +1,7 @@
 ### OPENJDK_VERSION ############################################################
 
 OPENJDK_PRODUCT_VERSION	?= 8
-OPENJDK_UPDATE_VERSION	?= 141
+OPENJDK_UPDATE_VERSION	?= 144
 
 ### DOCKER_IMAGE ###############################################################
 
