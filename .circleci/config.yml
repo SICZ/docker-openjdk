@@ -93,10 +93,10 @@ workflows:
       - 8u141-jdk-alpine:
           requires:
             - 8u141-jre-alpine
-      - 8u141-jre-centos:
+      - 8u141-jre-centos
+      - 8u141-jdk-centos:
           requires:
             - 8u141-jre-centos
-      - 8u141-jdk-centos
       - publish:
           requires:
             - 8u141-jre-alpine
