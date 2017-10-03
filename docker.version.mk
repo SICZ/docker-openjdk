@@ -48,18 +48,6 @@ SIMPLE_CA_IMAGE		?= $(SIMPLE_CA_IMAGE_NAME):$(SIMPLE_CA_IMAGE_TAG)
 # Simple CA service name in Docker Compose file
 SIMPLE_CA_SERVICE_NAME	?= $(shell echo $(SIMPLE_CA_NAME) | sed -E -e "s/[^[:alnum:]_]+/_/g")
 
-# Simple CA container name
-ifeq ($(DOCKER_EXECUTOR),container)
-SIMPLE_CA_CONTAINER_NAME ?= $(DOCKER_EXECUTOR_ID)_$(SIMPLE_CA_SERVICE_NAME)
-else ifeq ($(DOCKER_EXECUTOR),compose)
-SIMPLE_CA_CONTAINER_NAME ?= $(DOCKER_EXECUTOR_ID)_$(SIMPLE_CA_SERVICE_NAME)_1
-else ifeq ($(DOCKER_EXECUTOR),stack)
-# TODO: Docker Swarm Stack executor
-SIMPLE_CA_CONTAINER_NAME ?= $(DOCKER_EXECUTOR_ID)_$(SIMPLE_CA_SERVICE_NAME)_1
-else
-$(error Unknown Docker executor "$(DOCKER_EXECUTOR)")
-endif
-
 ### MAKE_VARS ##################################################################
 
 # Display the make variables
@@ -92,7 +80,6 @@ SIMPLE_CA_IMAGE_NAME:	$(SIMPLE_CA_IMAGE_NAME)
 SIMPLE_CA_IMAGE_TAG:	$(SIMPLE_CA_IMAGE_TAG)
 SIMPLE_CA_IMAGE:	$(SIMPLE_CA_IMAGE)
 SIMPLE_CA_SERVICE_NAME:	$(SIMPLE_CA_SERVICE_NAME)
-SIMPLE_CA_CONTAINER_NAME: $(SIMPLE_CA_CONTAINER_NAME)
 
 JAVA_KEYSTORE_PWD_FILE:	$(JAVA_KEYSTORE_PWD_FILE)
 JAVA_TRUSTSTORE_PWD_FILE: $(JAVA_TRUSTSTORE_PWD_FILE)
