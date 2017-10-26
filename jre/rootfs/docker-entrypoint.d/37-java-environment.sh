@@ -27,9 +27,9 @@ fi
 # Default Java truststore passphrase file
 : ${JAVA_TRUSTSTORE_PWD_FILE_NAME:=truststore.pwd}
 if [ -e /run/secrets/${JAVA_TRUSTSTORE_PWD_FILE_NAME} ]; then
-  : ${JAVA_KEYSTORE_PWD_FILE:=/run/secrets/${JAVA_TRUSTSTORE_PWD_FILE_NAME}}
+  : ${JAVA_TRUSTSTORE_PWD_FILE:=/run/secrets/${JAVA_TRUSTSTORE_PWD_FILE_NAME}}
 elif [ -e ${JAVA_TRUSTSTORE_DIR}/${JAVA_TRUSTSTORE_PWD_FILE_NAME} ]; then
-  : ${JAVA_KEYSTORE_PWD_FILE:=${JAVA_TRUSTSTORE_DIR}/${JAVA_TRUSTSTORE_PWD_FILE_NAME}}
+  : ${JAVA_TRUSTSTORE_PWD_FILE:=${JAVA_TRUSTSTORE_DIR}/${JAVA_TRUSTSTORE_PWD_FILE_NAME}}
 fi
 
 ### JAVA_KEYSTORE_FILE #########################################################
