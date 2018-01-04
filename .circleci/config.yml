@@ -17,34 +17,32 @@ jobs:
       - setup_remote_docker:
           version: 17.06.0-ce
       - run:
-          name: sicz/openjdk:8u151-jre-alpine
-          working_directory: 8u151/jre-alpine
+          name: Pull Docker images
           command: |
+            cd ${DOCKER_IMAGE_DIR}
             make docker-pull-baseimage
             make docker-pull-image || true
             make docker-pull-dependencies
             make docker-pull-testimage
+      - run:
+          name: sicz/openjdk:8u151-jre-alpine
+          working_directory: 8u151/jre-alpine
+          command: |
             make ci
       - run:
           name: sicz/openjdk:8u151-jdk-alpine
           working_directory: 8u151/jdk-alpine
           command: |
-            make docker-pull-image || true
             make ci
       - run:
           name: sicz/openjdk:8u151/jre-centos
           working_directory: 8u151/jre-centos
           command: |
-            make docker-pull-baseimage
-            make docker-pull-image || true
-            make docker-pull-dependencies
-            make docker-pull-testimage
             make ci
       - run:
           name: sicz/openjdk:8u151/jdk-centos
           working_directory: 8u151/jdk-centos
           command: |
-            make docker-pull-image || true
             make ci
       - deploy:
           name: Push images to the Docker Hub

@@ -18,7 +18,6 @@ DOCKER_VERSION_TARGETS	+= build \
 			   ci \
 			   clean \
 			   docker-pull \
-			   docker-pull-baseimage \
 			   docker-pull-dependencies \
 			   docker-pull-image \
 			   docker-pull-testimage \
@@ -33,11 +32,19 @@ DOCKER_VERSION_TARGETS	+= build \
 all: ci
 
 # Subdir targets
-.PHONY: $(DOCKER_VERSION_TARGETS)
+.PHONY: $(DOCKER_VERSION_TARGETS) docker-pull-baseimage
 $(DOCKER_VERSION_TARGETS):
 	@for DOCKER_VERSION in $(DOCKER_VERSIONS); do \
 		cd $(CURDIR)/$${DOCKER_VERSION}; \
 		$(MAKE) display-version-header $@; \
+	done
+# Do docker-pull-baseimage only on JRE
+docker-pull-baseimage:
+	@for DOCKER_VERSION in $(DOCKER_VERSIONS); do \
+		if [ "$${DOCKER_VERSION:0:4}" == "jre-" ]; then \
+			cd $(CURDIR)/$${DOCKER_VERSION}; \
+			$(MAKE) display-version-header $@; \
+		fi; \
 	done
 
 ################################################################################
