@@ -1,11 +1,11 @@
 ### OPENJDK_VERSION ############################################################
 
 OPENJDK_PRODUCT_VERSION	?= 8
-OPENJDK_UPDATE_VERSION	?= 144
+OPENJDK_UPDATE_VERSION	?= 151
 
 ### DOCKER_IMAGE ###############################################################
 
-ALPINE_VERSION		?= edge
+ALPINE_VERSION		?= 3.7
 CENTOS_VERSION		?= 7
 
 # Latest version tag

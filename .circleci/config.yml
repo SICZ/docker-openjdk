@@ -17,23 +17,23 @@ jobs:
       - setup_remote_docker:
           version: 17.06.0-ce
       - run:
-          name: sicz/openjdk:8u144-jre-alpine
-          working_directory: 8u144/jre-alpine
+          name: sicz/openjdk:8u151-jre-alpine
+          working_directory: 8u151/jre-alpine
           command: |
             make ci
       - run:
-          name: sicz/openjdk:8u144-jdk-alpine
-          working_directory: 8u144/jdk-alpine
+          name: sicz/openjdk:8u151-jdk-alpine
+          working_directory: 8u151/jdk-alpine
           command: |
             make ci
       - run:
-          name: sicz/openjdk:8u144/jre-centos
-          working_directory: 8u144/jre-centos
+          name: sicz/openjdk:8u151/jre-centos
+          working_directory: 8u151/jre-centos
           command: |
             make ci
       - run:
-          name: sicz/openjdk:8u144/jdk-centos
-          working_directory: 8u144/jdk-centos
+          name: sicz/openjdk:8u151/jdk-centos
+          working_directory: 8u151/jdk-centos
           command: |
             make ci
       - deploy:
