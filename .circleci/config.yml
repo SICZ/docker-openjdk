@@ -30,8 +30,6 @@ jobs:
           working_directory: 8u151/jdk-alpine
           command: |
             make docker-pull-image || true
-            make docker-pull-dependencies
-            make docker-pull-testimage
             make ci
       - run:
           name: sicz/openjdk:8u151/jre-centos
@@ -47,8 +45,6 @@ jobs:
           working_directory: 8u151/jdk-centos
           command: |
             make docker-pull-image || true
-            make docker-pull-dependencies
-            make docker-pull-testimage
             make ci
       - deploy:
           name: Push images to the Docker Hub
