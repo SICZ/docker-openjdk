@@ -24,23 +24,23 @@ jobs:
             make docker-pull-dependencies
             make docker-pull-testimage
       - run:
-          name: sicz/openjdk:8u151-jre-alpine
-          working_directory: 8u151/jre-alpine
+          name: sicz/openjdk:8u171-jre-alpine
+          working_directory: 8u171/jre-alpine
           command: |
             make ci
       - run:
-          name: sicz/openjdk:8u151-jdk-alpine
-          working_directory: 8u151/jdk-alpine
+          name: sicz/openjdk:8u171-jdk-alpine
+          working_directory: 8u171/jdk-alpine
           command: |
             make ci
       - run:
-          name: sicz/openjdk:8u151/jre-centos
-          working_directory: 8u151/jre-centos
+          name: sicz/openjdk:8u171/jre-centos
+          working_directory: 8u171/jre-centos
           command: |
             make ci
       - run:
-          name: sicz/openjdk:8u151/jdk-centos
-          working_directory: 8u151/jdk-centos
+          name: sicz/openjdk:8u171/jdk-centos
+          working_directory: 8u171/jdk-centos
           command: |
             make ci
       - deploy:

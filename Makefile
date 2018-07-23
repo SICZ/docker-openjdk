@@ -13,7 +13,7 @@ SHELL			+= -e
 ### MAKE_TARGETS ###############################################################
 
 # Docker image variants
-DOCKER_VARIANTS		= 8u151
+DOCKER_VARIANTS		= 8u171
 
 # Make targets propagated to all Docker image variants
 DOCKER_VARIANT_TARGETS	= build \
