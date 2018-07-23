@@ -38,7 +38,6 @@ all: ci
 # Subdir targets
 .PHONY: $(DOCKER_VARIANT_TARGETS)
 $(DOCKER_VARIANT_TARGETS):
-	ls -lRat
 	@for DOCKER_VARIANT in $(DOCKER_VARIANTS); do \
 		cd $(CURDIR)/$${DOCKER_VARIANT}; \
 		$(MAKE) $@; \
